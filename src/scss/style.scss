@@ -5,6 +5,7 @@
 }
 
 body {
+  position: absolute;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -61,3 +62,19 @@ body {
     border-radius: 20px;
   }
 }
+
+.moveBlock {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-size: 30px;
+  line-height: 120%;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.move {
+  margin-left: 10px;
+}
+

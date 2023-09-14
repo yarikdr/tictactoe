@@ -10,23 +10,46 @@ import modals from "./modules/modals"
 window.addEventListener('DOMContentLoaded', () => {
   const ending = () => {
     blocks.forEach(b => b.innerHTML='')
+    changeMove()
     nse = 0
   }
 
   modals('.modal', '[data-close]', ending)
   const blocks = document.querySelectorAll('.block'),
-        modal = document.querySelector('.modal')
+        modal = document.querySelector('.modal'),
+        move = document.querySelector('.move')
 
   const showModal = () => modal.classList.remove('hide')
+
+  const changeMove = () => {
+    if (nse % 2 != 0) {
+      move.innerHTML = '&times;'
+      move.style.cssText = `
+        font-size: 60px;
+        color: red;
+        line-height: 0;
+      `
+    } else {
+      move.innerHTML = '&bigcirc;'
+      move.style.cssText = `
+        font-size: 30px;
+        color: blue;
+      `
+    }
+  }
+
+  changeMove()
 
   const cross = `<div class="cross">&times;</div>`,
         circle = `<div class="circle">&bigcirc;</div>`
 
   let nse = 0 //number of symbols entered
 
+
   blocks.forEach((b, i) => {
     b.addEventListener('click', () => {
       if (!b.innerHTML) {
+        changeMove()
         if (nse % 2 == 0) {
           b.insertAdjacentHTML("beforeend", cross)
         } else {
