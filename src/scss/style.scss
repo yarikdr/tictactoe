@@ -78,3 +78,15 @@ body {
   margin-left: 10px;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0.3;
+  } 100% {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s;
+}
+

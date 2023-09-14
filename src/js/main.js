@@ -2,9 +2,9 @@ import gameover from "./modules/gameover"
 import modals from "./modules/modals"
 
 /*
-  todo: Make a move system
   todo: Make code more pretty and divide it into diff functions
-  todo: Make an animation of appearing for modal
+  todo: Make a move system DONE √
+  todo: Make an animation of appearing for modal DONE √
 */
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -19,7 +19,10 @@ window.addEventListener('DOMContentLoaded', () => {
         modal = document.querySelector('.modal'),
         move = document.querySelector('.move')
 
-  const showModal = () => modal.classList.remove('hide')
+  const showModal = () => {
+    modal.classList.remove('hide')
+    modal.classList.add('fadeIn')
+  }
 
   const changeMove = () => {
     if (nse % 2 != 0) {
