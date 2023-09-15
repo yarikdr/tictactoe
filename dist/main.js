@@ -1,1 +1,162 @@
-!function i(c,u,a){function l(t,e){if(!u[t]){if(!c[t]){var n="function"==typeof require&&require;if(!e&&n)return n(t,!0);if(s)return s(t,!0);var r=new Error("Cannot find module '"+t+"'");throw r.code="MODULE_NOT_FOUND",r}var o=u[t]={exports:{}};c[t][0].call(o.exports,function(e){return l(c[t][1][e]||e)},o,o.exports,i,c,u,a)}return u[t].exports}for(var s="function"==typeof require&&require,e=0;e<a.length;e++)l(a[e]);return l}({1:[function(e,t,n){"use strict";var u=r(e("./modules/gameover")),a=r(e("./modules/modals"));function r(e){return e&&e.__esModule?e:{default:e}}function l(e){return function(e){if(Array.isArray(e))return o(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return o(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);"Object"===n&&e.constructor&&(n=e.constructor.name);if("Map"===n||"Set"===n)return Array.from(e);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return o(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function o(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}window.addEventListener("DOMContentLoaded",function(){(0,a.default)(".modal","[data-close]",function(){n.forEach(function(e){return e.innerHTML=""}),i(),c=0});var n=document.querySelectorAll(".block"),r=document.querySelector(".modal"),e=document.querySelector(".move"),o=function(){r.classList.remove("hide"),r.classList.add("fadeIn")},i=function(){c%2!=0?(e.innerHTML="&times;",e.style.cssText="\n        font-size: 60px;\n        color: red;\n        line-height: 0;\n      "):(e.innerHTML="&bigcirc;",e.style.cssText="\n        font-size: 30px;\n        color: blue;\n      ")};i();var c=0;n.forEach(function(e,t){e.addEventListener("click",function(){e.innerHTML||(i(),c%2==0?e.insertAdjacentHTML("beforeend",'<div class="cross">&times;</div>'):e.insertAdjacentHTML("beforeend",'<div class="circle">&bigcirc;</div>'),c++),4<c&&((0,u.default)(l(n),"cross")&&(o(),r.firstElementChild.textContent="Red wins!"),(0,u.default)(l(n),"circle")&&(o(),r.firstElementChild.textContent="Blue wins!")),9===c&&(o(),r.firstElementChild.textContent="Draw!")})})})},{"./modules/gameover":2,"./modules/modals":3}],2:[function(e,t,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default=void 0;var r=function(e,n){var t,r=e.map(function(e){var t=e.firstElementChild;return t&&t.classList.contains(n)?1:0});if(["012","345","678","036","147","258","048","246"].forEach(function(e){r[e[0]]&&r[e[1]]&&r[e[2]]&&(t=!0)}),t)return!0};n.default=r},{}],3:[function(e,t,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default=void 0;var r=function(e){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:[],n=2<arguments.length?arguments[2]:void 0,r=document.querySelector(e),o=document.querySelectorAll(t);r.addEventListener("click",function(e){e.target===r&&(r.classList.add("hide"),n())}),o.forEach(function(e){e.addEventListener("click",function(){r.classList.add("hide"),n()})})};n.default=r},{}]},{},[1]);
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+"use strict";
+
+var _gameover = _interopRequireDefault(require("./modules/gameover"));
+var _modals = _interopRequireDefault(require("./modules/modals"));
+var _gameplay = _interopRequireDefault(require("./modules/gameplay"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/*
+  todo: Make code more pretty and divide it into diff functions DONE √
+  todo: Make a move system DONE √
+  todo: Make an animation of appearing for modal DONE √
+  todo: Create a to play with a bot mode
+*/
+
+window.addEventListener('DOMContentLoaded', function () {
+  (0, _gameplay.default)({
+    blocksSel: '.block',
+    modalSel: '.modal',
+    modalBinderFunction: _modals.default,
+    moveSel: '.move',
+    gameOverFunction: _gameover.default
+  });
+});
+
+},{"./modules/gameover":2,"./modules/gameplay":3,"./modules/modals":4}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var gameover = function gameover(blocks, typeClass) {
+  var symbols = blocks.map(function (e) {
+    var symbol = e.firstElementChild;
+    if (symbol) {
+      return symbol.classList.contains(typeClass) ? 1 : 0;
+    } else {
+      return 0;
+    }
+  });
+  var isCheckFinished;
+  var winCombinations = ['012', '345', '678', '036', '147', '258', '048', '246'];
+  winCombinations.forEach(function (c) {
+    if (symbols[c[0]] && symbols[c[1]] && symbols[c[2]]) {
+      isCheckFinished = true;
+    }
+  });
+  if (isCheckFinished) return true;
+
+  // if (blocks.every(e => e.firstElementChild)) return true
+};
+var _default = gameover;
+exports.default = _default;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+var gameplay = function gameplay() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+    blocksSel = _ref.blocksSel,
+    modalSel = _ref.modalSel,
+    modalBinderFunction = _ref.modalBinderFunction,
+    moveSel = _ref.moveSel,
+    gameOverFunction = _ref.gameOverFunction;
+  var ending = function ending() {
+    blocks.forEach(function (b) {
+      return b.innerHTML = '';
+    });
+    changeMove();
+    nse = 0;
+  };
+  var blocks = document.querySelectorAll(blocksSel),
+    modal = document.querySelector(modalSel),
+    move = document.querySelector(moveSel);
+  modalBinderFunction('.modal', ending);
+  var showModal = function showModal() {
+    modal.classList.remove('hide');
+    modal.classList.add('fadeIn');
+  };
+  var changeMove = function changeMove() {
+    if (nse % 2 != 0) {
+      move.innerHTML = '&times;';
+      move.style.cssText = "\n        font-size: 60px;\n        color: red;\n        line-height: 0;\n      ";
+    } else {
+      move.innerHTML = '&bigcirc;';
+      move.style.cssText = "\n        font-size: 30px;\n        color: blue;\n      ";
+    }
+  };
+  changeMove();
+  var cross = "<div class=\"cross\">&times;</div>",
+    circle = "<div class=\"circle\">&bigcirc;</div>";
+  var nse = 0; //number of symbols entered
+
+  blocks.forEach(function (b, i) {
+    b.addEventListener('click', function () {
+      if (!b.innerHTML) {
+        changeMove();
+        if (nse % 2 == 0) {
+          b.insertAdjacentHTML("beforeend", cross);
+        } else {
+          b.insertAdjacentHTML("beforeend", circle);
+        }
+        nse++;
+      }
+      if (nse > 4) {
+        if (gameOverFunction(_toConsumableArray(blocks), 'cross')) {
+          showModal();
+          modal.firstElementChild.textContent = "Red wins!";
+        }
+        if (gameOverFunction(_toConsumableArray(blocks), 'circle')) {
+          showModal();
+          modal.firstElementChild.textContent = "Blue wins!";
+        }
+      }
+      if (nse === 9) {
+        showModal();
+        modal.firstElementChild.textContent = "Draw!";
+      }
+    });
+  });
+};
+var _default = gameplay;
+exports.default = _default;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var modals = function modals(modalSel, callBack) {
+  var modal = document.querySelector(modalSel);
+  modal.addEventListener('click', function (e) {
+    var target = e.target;
+    if (target === modal) {
+      modal.classList.add('hide');
+      callBack();
+    }
+  });
+
+  // closeBtns.forEach(btn => {
+  //   btn.addEventListener('click', () => {
+  //     modal.classList.add('hide')
+  //     callBack()
+  //   })
+  // })
+};
+var _default = modals;
+exports.default = _default;
+
+},{}]},{},[1]);

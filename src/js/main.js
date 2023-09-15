@@ -1,81 +1,20 @@
 import gameover from "./modules/gameover"
 import modals from "./modules/modals"
+import gameplay from "./modules/gameplay"
 
 /*
-  todo: Make code more pretty and divide it into diff functions
+  todo: Make code more pretty and divide it into diff functions DONE √
   todo: Make a move system DONE √
   todo: Make an animation of appearing for modal DONE √
+  todo: Create a to play with a bot mode
 */
 
 window.addEventListener('DOMContentLoaded', () => {
-  const ending = () => {
-    blocks.forEach(b => b.innerHTML='')
-    changeMove()
-    nse = 0
-  }
-
-  modals('.modal', '[data-close]', ending)
-  const blocks = document.querySelectorAll('.block'),
-        modal = document.querySelector('.modal'),
-        move = document.querySelector('.move')
-
-  const showModal = () => {
-    modal.classList.remove('hide')
-    modal.classList.add('fadeIn')
-  }
-
-  const changeMove = () => {
-    if (nse % 2 != 0) {
-      move.innerHTML = '&times;'
-      move.style.cssText = `
-        font-size: 60px;
-        color: red;
-        line-height: 0;
-      `
-    } else {
-      move.innerHTML = '&bigcirc;'
-      move.style.cssText = `
-        font-size: 30px;
-        color: blue;
-      `
-    }
-  }
-
-  changeMove()
-
-  const cross = `<div class="cross">&times;</div>`,
-        circle = `<div class="circle">&bigcirc;</div>`
-
-  let nse = 0 //number of symbols entered
-
-
-  blocks.forEach((b, i) => {
-    b.addEventListener('click', () => {
-      if (!b.innerHTML) {
-        changeMove()
-        if (nse % 2 == 0) {
-          b.insertAdjacentHTML("beforeend", cross)
-        } else {
-          b.insertAdjacentHTML("beforeend", circle)
-        }
-        nse++
-      }
-
-      if (nse > 4) {
-        if (gameover([...blocks], 'cross')) {
-          showModal()
-          modal.firstElementChild.textContent = `Red wins!`
-        }
-        if (gameover([...blocks], 'circle')) {
-          showModal()
-          modal.firstElementChild.textContent = `Blue wins!`
-        }
-      }
-
-      if (nse === 9) {
-        showModal()
-        modal.firstElementChild.textContent = `Draw!`
-      }
-    })
+  gameplay({
+    blocksSel: '.block',
+    modalSel: '.modal',
+    modalBinderFunction: modals,
+    moveSel: '.move',
+    gameOverFunction: gameover
   })
 })
